@@ -39,9 +39,7 @@ def mesytec_parse(filename,columns):
 
 	initialTime = time()
 
-	parsedData = []
-	for i in range(len(columns)):
-		parsedData.append('')
+	parsedData = [np.zeros(0)]*columns
 
 	with open(filename) as f:
 		with open(outfilename,'w') as of:
@@ -68,12 +66,16 @@ def mesytec_parse(filename,columns):
 						if not dataid in columns:
 							break
 
-						parsedData[columns.index(dataid)] += str(data)+c
+						# parsedData[columns.index(dataid)] += str(data)+c
+						parsedData[columns.index(dataid)] = 
+							np.append(parsedData[columns.index(dataid)], data)
 
 				previousLine = line
 
-			for pd in parsedData:
-				of.write(pd+'\n')
+			for a in parsedData:
+				for e in a:
+					of.write(str(e)+c)
+				of.write('\n')
 
 	elapsedTime = time() - initialTime
 	print('File written to',outfilename)
