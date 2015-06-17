@@ -45,7 +45,6 @@ def condense_file(filename,columnsKeep):
 def mesytec_parse(filename,columns):
 	c = ','
 	FILEEXTENSIONLENGTH = 4
-
 	initialTime = time()
 	tempOutputs = []
 	for col in columns:
@@ -56,21 +55,27 @@ def mesytec_parse(filename,columns):
 			with open(outfilename,'w') as of:
 				previousLine = 'FFFF\n' # initialize previousLine
 				for line in f:
-
+					# print('line',line)
+					# input()
 					if line == '4040\n': # marks end of header
 
 						# convert last 2 bits to decimal,
 						# -1 because of end-header
 						numData = int(previousLine.split()[0][-2:],16) - 1
+						# print('previousLine',previousLine)
+						# input()
 
-						for i in range(numData):
-
+						for n in range(numData):
+							# print('i',n)
+							# print('numData',numData)
 							try:
 								dataLine = next(f)
 								dataidLine = next(f)
 							except:
 								break
-
+							# print('dataLine',dataLine)
+							# print('dataidLine',dataidLine)
+							# input()
 							if file_end(dataLine) or file_end(dataidLine):
 								break
 
@@ -78,9 +83,10 @@ def mesytec_parse(filename,columns):
 							dataid = int(dataidLine.split()[0][-2:],16)
 
 							if not dataid == col:
-								break
+								continue
 
 							of.write(str(data)+c)
+
 					previousLine = line
 
 	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed.txt'

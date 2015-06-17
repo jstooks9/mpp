@@ -19,12 +19,15 @@
 #	- Only accepts pairs of Ampl/TAC data (in that order)
 #	- If you enter an odd number of channels, program will exit
 
-from mesytec_process_3_4 import *
+from mesytec_process_3_5 import *
 import sys
 
 filename = sys.argv[1]
 inputfilename = sys.argv[2]
-figureTitle = sys.argv[3]
+if len(sys.argv) > 3:
+	figureTitle = sys.argv[3]
+else:
+	figureTitle = 'No title given'
 
 with open(inputfilename) as f:
 	keepColumns = f.readline().split('\n')[0].split()
