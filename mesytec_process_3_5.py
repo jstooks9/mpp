@@ -68,6 +68,7 @@ def mesytec_parse(filename,columns):
 						for n in range(numData):
 							# print('i',n)
 							# print('numData',numData)
+							# Must use try-except for possibility of EOF
 							try:
 								dataLine = next(f)
 								dataidLine = next(f)
@@ -128,6 +129,10 @@ def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 	figureName = inputfilename[:-FILEEXTENSIONLENGTH]+'_'+detector+'_plot.png'
 
 	x, y = readParsedFile(inputfilename,xcol,ycol)
+
+	if len(x) == 0 or len(y) == 0:
+		print('No data for',detector)
+		return
 
 	stdX = np.std(x)
 	meanX = np.mean(x)

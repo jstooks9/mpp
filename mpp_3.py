@@ -27,7 +27,7 @@ inputfilename = sys.argv[2]
 if len(sys.argv) > 3:
 	figureTitle = sys.argv[3]
 else:
-	figureTitle = 'No title given'
+	figureTitle = inputfilename
 
 with open(inputfilename) as f:
 	keepColumns = f.readline().split('\n')[0].split()
