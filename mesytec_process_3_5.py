@@ -43,11 +43,13 @@ def condense_file(filename,columnsKeep):
 		f.write(newData)
 
 def mesytec_parse(filename,columns):
+	what = 0
 	c = ','
 	FILEEXTENSIONLENGTH = 4
 	initialTime = time()
 	tempOutputs = []
 	for col in columns:
+		print('what?',what)
 		outfilename = filename[:-FILEEXTENSIONLENGTH]+str(col)+'_temp.txt'
 		tempOutputs.append(outfilename)
 
@@ -74,13 +76,21 @@ def mesytec_parse(filename,columns):
 								dataidLine = next(f)
 							except:
 								break
-							# print('dataLine',dataLine)
-							# print('dataidLine',dataidLine)
-							# input()
+
 							if file_end(dataLine) or file_end(dataidLine):
 								break
 
 							data = int(dataLine.split()[0],16)
+							if data < 5:
+								what += 1
+								# print(dataLine) # DEBUGGING
+								# print(dataidLine)
+								# print(next(f))
+								# print(next(f))
+								# print(next(f))
+								# print(next(f))
+								# print(next(f))
+								# input()
 							dataid = int(dataidLine.split()[0][-2:],16)
 
 							if not dataid == col:
