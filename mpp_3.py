@@ -19,7 +19,7 @@
 #	- Only accepts pairs of Ampl/TAC data (in that order)
 #	- If you enter an odd number of channels, program will exit
 
-from mesytec_process_3_5 import *
+from mesytec_process_3_6 import *
 import sys
 
 filename = sys.argv[1]
