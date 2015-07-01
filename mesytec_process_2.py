@@ -39,7 +39,7 @@ def mesytec_parse(filename):
 	dataOrder = [0,1,16,17,8,9,24,25,2,3,18,19,10,11,26,27, \
 				4,5,20,21,12,13,28,29,6,7,22,23,14,15,30,31]
 
-	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed.txt'
+	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed_OLD.txt'
 
 	initialTime = time()
 
@@ -105,7 +105,7 @@ def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 	FILEEXTENSIONLENGTH = 4
 	DEFAULTSTDS = 5
 
-	figureName = inputfilename[:-FILEEXTENSIONLENGTH]+'_'+detector+'_plot.png'
+	figureName = inputfilename[:-FILEEXTENSIONLENGTH]+'_'+detector+'_plot_OLD.png'
 
 	x, y = readParsedFile(inputfilename,xcol,ycol)
 

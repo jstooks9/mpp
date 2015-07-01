@@ -47,6 +47,7 @@ def mesytec_parse(filename,columns):
 	FILEEXTENSIONLENGTH = 4
 	initialTime = time()
 	tempOutputs = []
+	what = 0 # DEBUGGING
 	for col in columns:
 		outfilename = filename[:-FILEEXTENSIONLENGTH]+str(col)+'_temp.txt'
 		tempOutputs.append(outfilename)
@@ -55,19 +56,14 @@ def mesytec_parse(filename,columns):
 			with open(outfilename,'w') as of:
 				previousLine = 'FFFF\n' # initialize previousLine
 				for line in f:
-					# print('line',line)
-					# input()
 					if line == '4040\n': # marks end of header
 
 						# convert last 2 bits to decimal,
 						# -1 because of end-header
 						numData = int(previousLine.split()[0][-2:],16) - 1
-						# print('previousLine',previousLine)
-						# input()
 
+						correctDataBatch = False
 						for n in range(numData):
-							# print('i',n)
-							# print('numData',numData)
 							# Must use try-except for possibility of EOF
 							try:
 								dataLine = next(f)
@@ -78,17 +74,24 @@ def mesytec_parse(filename,columns):
 							if file_end(dataLine) or file_end(dataidLine):
 								break
 
-							data = int(dataLine.split()[0],16)
+							end = 'FFFF\n'
+							if dataLine == end and dataidLine == end:
+								correctDataBatch = False
+								break
 
+							data = int(dataLine.split()[0],16)
 							dataid = int(dataidLine.split()[0][-2:],16)
 
-							if not dataid == col:
-								continue
+							if dataid == col:
+								# if data > 410 and data < 420:
+								# 	what += 1
+								correctData = data
+								correctDataBatch = True
 
-							of.write(str(data)+c)
+						of.write(str(correctData)+c)
 
 					previousLine = line
-
+	print('what',what)
 	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed.txt'
 	with open(outfilename,'w') as of:
 		for t in tempOutputs:
@@ -174,6 +177,7 @@ def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 	plt.xlabel('Amplitude')
 	plt.title(figureTitle)
 	cbar = plt.colorbar()
+	# plt.show()
 
 	plt.savefig(figureName)
 	plt.close(fig)
