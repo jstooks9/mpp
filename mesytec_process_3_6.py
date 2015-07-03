@@ -87,8 +87,9 @@ def mesytec_parse(filename,columns):
 								# 	what += 1
 								correctData = data
 								correctDataBatch = True
-
-						of.write(str(correctData)+c)
+						
+						if correctDataBatch:
+							of.write(str(correctData)+c)
 
 					previousLine = line
 	print('what',what)
