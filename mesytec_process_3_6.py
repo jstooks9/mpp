@@ -13,6 +13,7 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from pylab import *
 
 import warnings # DEBUGGING
 warnings.simplefilter("error") # DEBUGGING
@@ -89,8 +90,8 @@ def mesytec_parse(filename,columns):
 								correctDataBatch = True
 						
 						if correctDataBatch:
-							of.write(str(correctData)+c)
-
+							of.write("%i," % (correctData))
+							
 					previousLine = line
 	print('what',what)
 	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed.txt'
@@ -124,6 +125,24 @@ def readParsedFile(filename,xcol,ycol):
 
 	return xList, yList
 
+def histogram_1d(y,figureTitle,label,filename,detector):
+	FILEEXTENSIONLENGTH	= 4
+	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_'+detector+'_'+label+'_spectrum.txt'
+	binStart = 0
+	binEnd = 4000
+	binBounds = np.linspace(binStart,binEnd,binEnd+1)
+	histy, histx = np.histogram(y,bins=binBounds)
+	with open(outfilename,'w') as of:
+		for x,y in zip(histx,histy):
+			of.write("%i\t%i\n" % (x,y))
+	plt.figure()
+	plt.plot(histx[1:],histy)
+	plt.xlabel(label)
+	plt.title(figureTitle)
+	plt.show()
+
+
+
 def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 
 	FILEEXTENSIONLENGTH = 4
@@ -132,6 +151,9 @@ def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 	figureName = inputfilename[:-FILEEXTENSIONLENGTH]+'_'+detector+'_plot.png'
 
 	x, y = readParsedFile(inputfilename,xcol,ycol)
+
+	histogram_1d(x,figureTitle,'Amplitude',inputfilename,detector)
+	histogram_1d(y,figureTitle,'TAC',inputfilename,detector)
 
 	if len(x) == 0 or len(y) == 0:
 		print('No data for',detector)
