@@ -48,7 +48,7 @@ def mesytec_parse(filename,columns):
 	FILEEXTENSIONLENGTH = 4
 	initialTime = time()
 	tempOutputs = []
-	what = 0 # DEBUGGING
+	# what = 0 # DEBUGGING
 	for col in columns:
 		outfilename = filename[:-FILEEXTENSIONLENGTH]+str(col)+'_temp.txt'
 		tempOutputs.append(outfilename)
@@ -93,7 +93,7 @@ def mesytec_parse(filename,columns):
 							of.write("%i," % (correctData))
 							
 					previousLine = line
-	print('what',what)
+	# print('what',what)
 	outfilename = filename[:-FILEEXTENSIONLENGTH]+'_parsed.txt'
 	with open(outfilename,'w') as of:
 		for t in tempOutputs:
@@ -133,13 +133,15 @@ def histogram_1d(y,figureTitle,label,filename,detector):
 	binBounds = np.linspace(binStart,binEnd,binEnd+1)
 	histy, histx = np.histogram(y,bins=binBounds)
 	with open(outfilename,'w') as of:
-		for x,y in zip(histx,histy):
-			of.write("%i\t%i\n" % (x,y))
-	plt.figure()
-	plt.plot(histx[1:],histy)
-	plt.xlabel(label)
-	plt.title(figureTitle)
-	plt.show()
+		# for x,y in zip(histx,histy):
+		# 	of.write("%i\t%i\n" % (x,y))
+		for y in histy:
+			of.write("%i\n" % (y))
+	# plt.figure()
+	# plt.plot(histx[1:],histy)
+	# plt.xlabel(label)
+	# plt.title(figureTitle)
+	# plt.show()
 
 
 
@@ -163,15 +165,15 @@ def histogram_2d(inputfilename,nbins,figureTitle,stds,xcol,ycol,detector):
 	meanX = np.mean(x)
 	maxX = meanX + (stdX * stds)
 	minX = meanX - (stdX * stds)
-	# maxX = 3000
-	# minX = 0
+	maxX = 4000
+	minX = 0
 
 	stdY = np.std(y)
 	meanY = np.mean(y)
 	maxY = meanY + (stdY * stds)
 	minY = meanY - (stdY * stds)
-	# maxY = 3000
-	# minY = 0
+	maxY = 4000
+	minY = 0
 
 	trimmedX = []
 	trimmedY = []
